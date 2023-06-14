@@ -51,6 +51,23 @@ func (model DaysModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 			return model, tea.Quit
 		}
+
+		switch {
+		case key.Matches(msg, keys.Read):
+			i, ok := model.list.SelectedItem().(item)
+
+			if ok {
+				model.choice = string(i)
+			}
+
+			preview, err := newPreviewer(model.selectedYear, model.choice)
+
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			return preview.Update(tea.KeyMsg{})
+		}
 	}
 
 	var cmd tea.Cmd

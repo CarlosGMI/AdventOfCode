@@ -3,6 +3,8 @@ package tui
 import (
 	"AdventOfCode/pkg/config"
 	"fmt"
+	"log"
+	"os"
 
 	"github.com/charmbracelet/bubbles/key"
 	"github.com/charmbracelet/bubbles/list"
@@ -66,8 +68,14 @@ func (model YearsModel) View() string {
 func (model YearsModel) PopulateItems() []list.Item {
 	items := []list.Item{}
 
-	for _, v := range config.YearsList {
-		items = append(items, item(v))
+	entries, err := os.ReadDir("./pkg/app")
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	for _, v := range entries {
+		items = append(items, item(v.Name()))
 	}
 
 	return items

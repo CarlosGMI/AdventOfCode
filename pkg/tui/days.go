@@ -3,6 +3,8 @@ package tui
 import (
 	"AdventOfCode/pkg/config"
 	"fmt"
+	"log"
+	"os"
 
 	"github.com/charmbracelet/bubbles/key"
 	"github.com/charmbracelet/bubbles/list"
@@ -64,8 +66,14 @@ func (model DaysModel) View() string {
 func (model DaysModel) PopulateItems() []list.Item {
 	items := []list.Item{}
 
-	for _, v := range config.DaysList {
-		items = append(items, item(v))
+	entries, err := os.ReadDir(fmt.Sprintf("./pkg/app/%s", model.selectedYear))
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	for _, v := range entries {
+		items = append(items, item(v.Name()))
 	}
 
 	return items

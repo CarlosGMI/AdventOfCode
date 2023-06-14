@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	years := tui.NewYearsModel()
+	years := tui.NewYearsModel("")
 	program := tea.NewProgram(years)
 	_, err := program.Run()
 

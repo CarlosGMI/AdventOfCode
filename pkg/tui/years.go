@@ -16,12 +16,26 @@ type YearsModel struct {
 	choice string
 }
 
-func NewYearsModel() YearsModel {
+func NewYearsModel(year string) YearsModel {
 	model := YearsModel{}
 	items := model.PopulateItems()
 	list := createList(items, "Select year:", config.Years, yearsHelpOptions)
-
 	model.list = list
+
+	if year != "" {
+		files, err := os.ReadDir("./pkg/app")
+
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		for i, file := range files {
+			if file.Name() == year {
+				model.list.Select(i)
+				break
+			}
+		}
+	}
 
 	return model
 }
@@ -46,7 +60,7 @@ func (model YearsModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 			if ok {
 				model.choice = string(i)
-				daysModel := newDaysModel(model.choice)
+				daysModel := newDaysModel(model.choice, "")
 
 				return daysModel.Update(tea.KeyMsg{})
 			}

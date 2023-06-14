@@ -6,6 +6,7 @@ type keyMap struct {
 	Enter key.Binding
 	Exec  key.Binding
 	Read  key.Binding
+	Back  key.Binding
 }
 
 var keys = keyMap{
@@ -20,5 +21,9 @@ var keys = keyMap{
 	Read: key.NewBinding(
 		key.WithKeys("r"),
 		key.WithHelp("r", "read"),
+	),
+	Back: key.NewBinding(
+		key.WithKeys("esc"),
+		key.WithHelp("esc", "back"),
 	),
 }

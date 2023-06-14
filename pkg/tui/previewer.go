@@ -61,8 +61,12 @@ func (model previewer) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
 		switch msg.String() {
-		case "q", "ctrl+c", "esc":
+		case "q", "ctrl+c":
 			return model, tea.Quit
+		case "esc":
+			model := newDaysModel(model.selectedYear, model.selectedDay)
+
+			return model.Update(tea.KeyMsg{})
 		default:
 			var cmd tea.Cmd
 			model.viewport, cmd = model.viewport.Update(msg)
@@ -78,7 +82,7 @@ func (model previewer) View() string {
 }
 
 func (model previewer) helpView() string {
-	return helpStyle("\n  ↑/↓: Navigate • q: Quit\n")
+	return helpStyle("\n  ↑/↓: Navigate • esc: go back • q: quit\n")
 }
 
 func (model previewer) contentPreview() string {

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strconv"
 
 	"github.com/charmbracelet/bubbles/key"
 	"github.com/charmbracelet/bubbles/list"
@@ -17,12 +18,21 @@ type DaysModel struct {
 	selectedYear string
 }
 
-func newDaysModel(year string) DaysModel {
+func newDaysModel(year string, day string) DaysModel {
 	model := DaysModel{selectedYear: year}
 	items := model.PopulateItems()
 	list := createList(items, "Select day:", config.Days, daysHelpOptions)
-
 	model.list = list
+
+	if day != "" {
+		currentDayIndex, err := strconv.Atoi(day)
+
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		model.list.Select(currentDayIndex - 1)
+	}
 
 	return model
 }
@@ -67,6 +77,11 @@ func (model DaysModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			}
 
 			return preview.Update(tea.KeyMsg{})
+
+		case key.Matches(msg, keys.Back):
+			newModel := NewYearsModel(model.selectedYear)
+
+			return newModel.Update(tea.KeyMsg{})
 		}
 	}
 
@@ -97,5 +112,5 @@ func (model DaysModel) PopulateItems() []list.Item {
 }
 
 func daysHelpOptions() []key.Binding {
-	return []key.Binding{keys.Exec, keys.Read}
+	return []key.Binding{keys.Back, keys.Exec, keys.Read}
 }

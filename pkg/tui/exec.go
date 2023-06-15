@@ -44,6 +44,11 @@ func (model execModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		switch msg.String() {
 		case "q", "ctrl+c":
 			return model, tea.Quit
+		case "enter":
+			model.emptySub()
+			model.data = nil
+
+			return model, model.listenForActivity()
 		case "esc":
 			model.emptySub()
 			model := newDaysModel(model.selectedYear, model.selectedDay)
@@ -69,7 +74,7 @@ func (model execModel) View() string {
 }
 
 func (model execModel) help() string {
-	return helpStyle("esc: go back • q: quit\n\n")
+	return helpStyle("esc: go back • enter: re-execute • q: quit\n\n")
 }
 
 func (model execModel) listenForActivity() tea.Cmd {

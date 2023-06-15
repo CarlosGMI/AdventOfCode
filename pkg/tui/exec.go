@@ -4,6 +4,7 @@ import (
 	"AdventOfCode/pkg/app"
 	"AdventOfCode/pkg/config"
 	"fmt"
+	"strings"
 
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
@@ -44,6 +45,7 @@ func (model execModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case "q", "ctrl+c":
 			return model, tea.Quit
 		case "esc":
+			model.emptySub()
 			model := newDaysModel(model.selectedYear, model.selectedDay)
 
 			return model.Update(tea.KeyMsg{})
@@ -60,19 +62,14 @@ func (model execModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (model execModel) View() string {
-	var content string
 	var style = lipgloss.NewStyle().
 		PaddingLeft(4)
 
-	for _, v := range model.data {
-		content += fmt.Sprintf("\n%s", v)
-	}
-
-	return style.Render(fmt.Sprintf("\n%s\n\n\n\n\n\n\n\n\n\n\n\n%s", content, model.help()))
+	return style.Render(fmt.Sprintf("\n%s\n\n\n\n\n\n\n\n\n\n\n\n%s", strings.Join(model.data, "\n"), model.help()))
 }
 
 func (model execModel) help() string {
-	return helpStyle("esc: go back • q: quit\n")
+	return helpStyle("esc: go back • q: quit\n\n")
 }
 
 func (model execModel) listenForActivity() tea.Cmd {
@@ -81,5 +78,11 @@ func (model execModel) listenForActivity() tea.Cmd {
 		challenge.Exec(&model.sub)
 
 		return app.ChallengeMsg(<-model.sub)
+	}
+}
+
+func (model execModel) emptySub() {
+	for len(model.sub) > 0 {
+		<-model.sub
 	}
 }

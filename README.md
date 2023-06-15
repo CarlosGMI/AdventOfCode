@@ -27,7 +27,7 @@ If you want to add more Advent of Code challenges from the ones in this repo you
 
 ```go
 var Challenges = map[string]Challenge{
-	"2022-1": challenges.Exec20221{},
+    "2022-1": challenges.Exec20221{},
     "2024-1": challenges.Exec20241{}, // <-- new challenge
 }
 ```

@@ -59,7 +59,9 @@ func (model DaysModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				model.choice = string(i)
 			}
 
-			return model, tea.Quit
+			newModel := newExecModel(model.selectedYear, model.choice)
+
+			return newModel, newModel.Init()
 		}
 
 		switch {
@@ -98,7 +100,7 @@ func (model DaysModel) View() string {
 func (model DaysModel) PopulateItems() []list.Item {
 	items := []list.Item{}
 
-	entries, err := os.ReadDir(fmt.Sprintf("./pkg/app/%s", model.selectedYear))
+	entries, err := os.ReadDir(fmt.Sprintf("./pkg/app/instructions/%s", model.selectedYear))
 
 	if err != nil {
 		log.Fatal(err)

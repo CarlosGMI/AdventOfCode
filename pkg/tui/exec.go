@@ -75,7 +75,17 @@ func (model execModel) help() string {
 func (model execModel) listenForActivity() tea.Cmd {
 	return func() tea.Msg {
 		challenge := config.Challenges[fmt.Sprintf("%s-%s", model.selectedYear, model.selectedDay)]
-		challenge.Exec(&model.sub)
+
+		if challenge == nil {
+			errorStyle := lipgloss.NewStyle().Foreground(lipgloss.Color(config.ErrorColor)).Render
+			model.sub <- app.ChallengeMsg{
+				Data: errorStyle("Execution function not found for this challenge"),
+			}
+
+			return nil
+		} else {
+			challenge.Exec(&model.sub)
+		}
 
 		return app.ChallengeMsg(<-model.sub)
 	}

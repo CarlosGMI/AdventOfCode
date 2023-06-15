@@ -1,3 +1,5 @@
+![Recording 2023-06-15 at 19 41 18](https://github.com/CarlosGMI/AdventOfCode/assets/22606306/35cc0378-9328-4702-a94d-725540bc8f7f)
+
 This is a simple TUI application for listing and executing all the [Advent of Code](https://adventofcode.com/) challenges. The application makes use of [Bubbletea](https://github.com/charmbracelet/bubbletea) for all the lists and options in the application.
 
 ## Requirements

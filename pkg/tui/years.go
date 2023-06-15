@@ -82,7 +82,7 @@ func (model YearsModel) View() string {
 func (model YearsModel) PopulateItems() []list.Item {
 	items := []list.Item{}
 
-	entries, err := os.ReadDir("./pkg/app")
+	entries, err := os.ReadDir("./pkg/app/instructions")
 
 	if err != nil {
 		log.Fatal(err)

@@ -86,7 +86,7 @@ func (model previewer) helpView() string {
 }
 
 func (model previewer) contentPreview() string {
-	content, err := os.ReadFile(fmt.Sprintf("./pkg/app/%s/%s/README.md", model.selectedYear, model.selectedDay))
+	content, err := os.ReadFile(fmt.Sprintf("./pkg/app/instructions/%s/%s/README.md", model.selectedYear, model.selectedDay))
 
 	if err != nil {
 		log.Fatal(err)
